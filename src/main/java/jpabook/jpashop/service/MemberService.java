@@ -20,10 +20,17 @@ public class MemberService {
     //회원 가입
     @Transactional
     public Long join(Member member) {
-
-
+        validateMemberName(member.getName());
         memberRepository.save(member);
         return member.getId();
+    }
+
+
+    private void validateMemberName(String name) {
+        List<Member> findMembers = memberRepository.findByName(name);
+        if(!findMembers.isEmpty()){
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
     }
 
     //회원 전체 조회
