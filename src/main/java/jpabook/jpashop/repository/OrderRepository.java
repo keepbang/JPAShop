@@ -1,10 +1,13 @@
 package jpabook.jpashop.repository;
 
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 
 
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -16,7 +19,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderRepository {
+public class OrderRepository{
 
     private final EntityManager em;
 
@@ -33,7 +36,7 @@ public class OrderRepository {
      * @param orderSearch
      * @return
      */
-    public List<Order> findAll(OrderSearch orderSearch) {
+    public List<Order> findAllCriteria(OrderSearch orderSearch) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Order> cq = cb.createQuery(Order.class);
         Root<Order> o = cq.from(Order.class);
