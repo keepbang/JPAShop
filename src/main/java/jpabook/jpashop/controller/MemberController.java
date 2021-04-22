@@ -1,5 +1,7 @@
 package jpabook.jpashop.controller;
 
+import jpabook.jpashop.ResultCode;
+import jpabook.jpashop.ResultVO;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;
@@ -39,6 +41,23 @@ public class MemberController {
 
         memberService.join(member);
         return "redirect:/";
+    }
+
+    @PostMapping ("/members/insert")
+    public ResultVO insert(@Valid MemberForm form, BindingResult result){
+        if(result.hasErrors()){
+            return new ResultVO(ResultCode.FAILURE,"Binding Error");
+        }
+
+        Address address = new Address(form.getCity(),form.getStreet(),form.getZipcode());
+        Member member = new Member();
+        member.setName(form.getName());
+        member.setAddress(address);
+
+        memberService.join(member);
+
+        return new ResultVO(ResultCode.FAILURE,"");
+
     }
 
     @GetMapping("/members")
